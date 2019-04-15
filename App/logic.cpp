@@ -50,7 +50,7 @@ void SaveProcess(void)
 {
     if (App.Menu.FocusFormPointer->FocusTextBoxPointer == null) return;
    
-    System.Device.Storage.Parameter.Write((uint *)App.Menu.FocusFormPointer->FocusTextBoxPointer->DataPointer);
+    TSystem.Device.Storage.WriteParameter((uint *)App.Menu.FocusFormPointer->FocusTextBoxPointer->DataPointer);
 }
 
 
@@ -63,7 +63,7 @@ void LongSaveProcess(void)
     textBoxPointer = App.Menu.FocusFormPointer->TextBoxPointer;
     while (textBoxPointer != null)
     {
-        System.Device.Storage.Parameter.Write(textBoxPointer->DataPointer);
+        TSystem.Device.Storage.WriteParameter(textBoxPointer->DataPointer);
         textBoxPointer = textBoxPointer->NextTextBoxPointer;
     }
 }
@@ -110,7 +110,7 @@ void KeyProcess(KeyEnum key)
             break;
             
         case KeyAuxUp:              // 写日志(测试)
-            System.Device.Storage.Log.Write("Log Test = %d\n", Counter++);
+            TSystem.Device.Storage.WriteLog("Log Test = %d\n", Counter++);
             break;
         case KeyLongAuxUp:          // 打开PWMChannel3(测试)
             //System.Device.DO.Config(DOPWM);
@@ -127,7 +127,7 @@ void KeyProcess(KeyEnum key)
             *App.Data.DO.pY5 = 1;
             break;
         case KeyAuxDown:            // 读日志(测试)
-            printf(System.Device.Storage.Log.Read(-1));
+            printf(TSystem.Device.Storage.ReadLog(-1));
             break;
         case KeyLongAuxDown:        // 关闭PWMChannel0(测试)
             TSystem.Device.DO.Close(PwmChannel3);

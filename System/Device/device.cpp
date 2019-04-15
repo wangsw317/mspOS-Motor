@@ -77,7 +77,7 @@ void InitDevice(void)
 
     InitTimer();
 
-    InitStorage();
+    //InitStorage();
 
     //InitMisc();
 

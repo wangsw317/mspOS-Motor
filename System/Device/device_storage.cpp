@@ -163,29 +163,6 @@ static void ReadAllParameter(void)
     printf("\n参数写入点 = %d", Parameter.WritePonit);
 }
 
-
-/*******************************************************************************
-* 描述	    : 存储数据，基于数据的指针来存储数据。
-* 输入参数  : 数据的指针
-* 返回参数  : bool变量
-*******************************************************************************/
-static bool WriteParameter(void * dataPointer)
-{
-    uint * pointer;
-    pointer = (uint *)dataPointer;
-    
-    if (dataPointer == (uint *)0) return (false);
-
-    if (Parameter.WritePonit == Parameter.Space) return(false);
-
-    Open();
-    FLASH_ProgramWord((uint)(&CellBlock[Parameter.WritePonit].Address), (uint)pointer);
-    FLASH_ProgramWord((uint)(&CellBlock[Parameter.WritePonit].Data), *pointer);
-    Close();
-    Parameter.WritePonit++;
-    return (true);
-}
-
 /*******************************************************************************
 * 描述	    : 读取日志存储信息
 *******************************************************************************/
@@ -217,11 +194,32 @@ static void ReadLogProfile(void)
     printf("\n\n");
 }
 
+/*******************************************************************************
+* 描述	    : 存储数据，基于数据的指针来存储数据。
+* 输入参数  : 数据的指针
+* 返回参数  : bool变量
+*******************************************************************************/
+bool CSystem::Device::Storage::WriteParameter(void * dataPointer)
+{
+    uint * pointer;
+    pointer = (uint *)dataPointer;
+    
+    if (dataPointer == (uint *)0) return (false);
+
+    if (Parameter.WritePonit == Parameter.Space) return(false);
+
+    Open();
+    FLASH_ProgramWord((uint)(&CellBlock[Parameter.WritePonit].Address), (uint)pointer);
+    FLASH_ProgramWord((uint)(&CellBlock[Parameter.WritePonit].Data), *pointer);
+    Close();
+    Parameter.WritePonit++;
+    return (true);
+}
 
 /*******************************************************************************
 * 描述	    : 清除日志信息
 *******************************************************************************/
-static void EraseLog(void)
+void CSystem::Device::Storage::EraseLog(void)
 {
     int i;
     
@@ -244,7 +242,7 @@ static void EraseLog(void)
 *           :           >0: 读取第N条记录
 * 返回参数  : 字符串指针
 *******************************************************************************/
-static char * ReadLog(int sequence)
+char * CSystem::Device::Storage::ReadLog(int sequence)
 {
     char * pointer;
     char * returnPointer;
@@ -295,7 +293,7 @@ static char * ReadLog(int sequence)
 * 输入参数  : 字符串
 * 返回参数  : bool变量
 *******************************************************************************/
-static bool WriteLog(char *fmt, ...)
+bool CSystem::Device::Storage::WriteLog(char *fmt, ...)
 {
     int i, j, len;
     ushort * pointer;
@@ -330,15 +328,15 @@ static bool WriteLog(char *fmt, ...)
     return (true);
 }
 
-void InitStorage(void)
+CSystem::Device::Storage::Storage(void)
 {
     ReadAllParameter();
-    System.Device.Storage.Parameter.Write = WriteParameter;
+    //System.Device.Storage.Parameter.Write = WriteParameter;
 
     ReadLogProfile();
-    System.Device.Storage.Log.Erase = EraseLog;
-    System.Device.Storage.Log.Read = ReadLog;
-    System.Device.Storage.Log.Write = WriteLog;
+    //System.Device.Storage.Log.Erase = EraseLog;
+    //System.Device.Storage.Log.Read = ReadLog;
+    //System.Device.Storage.Log.Write = WriteLog;
 }
 
 

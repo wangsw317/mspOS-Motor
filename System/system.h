@@ -213,6 +213,20 @@ typedef struct
         {
             void (* DisplayString)(byte y, string string);
         }Lcd;
+        
+        struct Storage
+        {
+            struct Parameter
+            {
+                bool (*Write)(void * dataPointer);  
+            }Parameter;
+            struct Log
+            {
+                void (*Erase)(void);
+                char * (*Read)(int sequence);
+                bool (*Write)(char *fmt, ...);
+            }Log;
+        }Storage;
 #endif    
         struct Usart1
         {
@@ -234,19 +248,7 @@ typedef struct
             void (*Stop)(int id); 
         }Timer;
 
-        struct Storage
-        {
-            struct Parameter
-            {
-                bool (*Write)(void * dataPointer);  
-            }Parameter;
-            struct Log
-            {
-                void (*Erase)(void);
-                char * (*Read)(int sequence);
-                bool (*Write)(char *fmt, ...);
-            }Log;
-        }Storage;
+
 
         struct Systick
         {
@@ -341,6 +343,16 @@ public:
             Misc(void);
             void SetBeep(bool status);
         }Misc;
+        
+        class Storage
+        {
+        public:
+            Storage(void);
+            bool WriteParameter(void * dataPointer);  
+            void EraseLog(void);
+            char * ReadLog(int sequence);
+            bool WriteLog(char *fmt, ...);
+        }Storage;
     }Device;
 };
 

@@ -82,38 +82,21 @@ byte Ascii(byte hex)
 void PostMessage(MessageEnum message, uint data)
 {
     data |= (uint)message << 24;
-    TSystem.OS.PostMessageQueue(data);	
+    System.OS.PostMessageQueue(data);	
 }
 
 
-extern void InitDevice(void);
 
-CSystem TSystem;
-
-static void Init(void)
-{
-    DisableIrq();
-    
-    RomBase = (uint)Init & 0xFF000000;
-    RamBase = (uint)(&RamBase) & 0xFF000000;
-    
-    //InitGui();
-	//InitOs();
-    InitDevice();
-    //InitModbus();
-    //InitPid();
-}
-
-SystemStruct System = 
-{
-    Init   // 直接初始化Init成员，不需要赋值
-};
 
 
 
 CSystem::CSystem(void)
 {
-
+    DisableIrq();
+    
+    RomBase = (uint)PostMessage & 0xFF000000;
+    RamBase = (uint)(&RamBase) & 0xFF000000;
 }
 
+CSystem System;
 

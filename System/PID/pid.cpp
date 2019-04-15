@@ -57,6 +57,6 @@ static void PidRoutine(void)
 void InitPid(void)
 {    
     Pid.Acc = 0;
-    TSystem.Device.Systick.Register(Systick100, PidRoutine); // 利用10mS系统节拍，一般够用了
+    System.Device.Systick.Register(Systick100, PidRoutine); // 利用10mS系统节拍，一般够用了
 }
 

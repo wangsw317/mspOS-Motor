@@ -165,12 +165,6 @@ extern void PostMessage(MessageEnum message, uint data);
 *V0.1    Wangsw        2013/09/11       ≥ı º∞Ê±æ
 *******************************************************************************/
 
-typedef struct
-{
-    void (*Init)(void);
-}SystemStruct;
-
-extern SystemStruct System;
 
 
 class CSystem
@@ -297,5 +291,5 @@ public:
     }Device;
 };
 
-extern CSystem TSystem;
+extern CSystem System;
 #endif 

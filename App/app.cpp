@@ -80,12 +80,9 @@ CApp::CApp(void)
 *******************************************************************************/
 int main(void) 
 {      
-    //InitData();
-    System.Init();                          // 初始化系统层
-
-    TSystem.OS.CreateLogicTask(LogicTask);   // 创建业务逻辑任务
-    TSystem.OS.CreateMenuTask(MenuTask);     // 创建菜单界面任务
+    System.OS.CreateLogicTask(LogicTask);   // 创建业务逻辑任务
+    System.OS.CreateMenuTask(MenuTask);     // 创建菜单界面任务
     
-    TSystem.OS.Start();
+    System.OS.Start();
     EnableIrq();                            // 关中断
 }

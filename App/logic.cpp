@@ -50,7 +50,7 @@ void SaveProcess(void)
 {
     if (App.Menu.FocusFormPointer->FocusTextBoxPointer == null) return;
    
-    TSystem.Device.Storage.WriteParameter((uint *)App.Menu.FocusFormPointer->FocusTextBoxPointer->DataPointer);
+    System.Device.Storage.WriteParameter((uint *)App.Menu.FocusFormPointer->FocusTextBoxPointer->DataPointer);
 }
 
 
@@ -63,7 +63,7 @@ void LongSaveProcess(void)
     textBoxPointer = App.Menu.FocusFormPointer->TextBoxPointer;
     while (textBoxPointer != null)
     {
-        TSystem.Device.Storage.WriteParameter(textBoxPointer->DataPointer);
+        System.Device.Storage.WriteParameter(textBoxPointer->DataPointer);
         textBoxPointer = textBoxPointer->NextTextBoxPointer;
     }
 }
@@ -105,12 +105,12 @@ void KeyProcess(KeyEnum key)
         case KeyLongAdd:
         case KeySub :
         case KeyLongSub:
-            TSystem.Gui.ModifyTextBoxData(key);
+            System.Gui.ModifyTextBoxData(key);
             TextBoxKeyProcess(key);
             break;
             
         case KeyAuxUp:              // 写日志(测试)
-            TSystem.Device.Storage.WriteLog("Log Test = %d\n", Counter++);
+            System.Device.Storage.WriteLog("Log Test = %d\n", Counter++);
             break;
         case KeyLongAuxUp:          // 打开PWMChannel3(测试)
             //System.Device.DO.Config(DOPWM);
@@ -127,10 +127,10 @@ void KeyProcess(KeyEnum key)
             *App.Data.DO.pY5 = 1;
             break;
         case KeyAuxDown:            // 读日志(测试)
-            printf(TSystem.Device.Storage.ReadLog(-1));
+            printf(System.Device.Storage.ReadLog(-1));
             break;
         case KeyLongAuxDown:        // 关闭PWMChannel0(测试)
-            TSystem.Device.DO.Close(PwmChannel3);
+            System.Device.DO.Close(PwmChannel3);
             break;
             
         case KeySave:               // 焦点数据存储
@@ -141,7 +141,7 @@ void KeyProcess(KeyEnum key)
             break;
             
         case KeyTextBoxFocus:       // 文本切换
-            TSystem.Gui.SwitchTextBoxFocus();
+            System.Gui.SwitchTextBoxFocus();
             break; 
         case KeyLongFormFocus:      // 页面切换
             FormFocusProcess();
@@ -151,7 +151,7 @@ void KeyProcess(KeyEnum key)
             App.Data.OnOff = on;
             break;
         case KeyLongStart:          // 定时器(测试)
-            TSystem.Device.Timer.Start(0, TimerMessage, 1000, FormFocusProcess);
+            System.Device.Timer.Start(0, TimerMessage, 1000, FormFocusProcess);
             break;
             
         case KeyStop:               //停止运行
@@ -170,10 +170,10 @@ static void AppSystick100(void)
 
 static void InitLogic(void)
 {
-    TSystem.Device.Adc.Register(AdcChannel0, (ushort *)(&App.Data.Voltage));
-    TSystem.Device.Adc.Register(AdcChannel1, (ushort *)(&App.Data.Current));
-    TSystem.Device.Adc.Register(AdcTemperature, (ushort *)(&App.Data.Temperature));
-    TSystem.Device.Systick.Register(Systick100, AppSystick100);
+    System.Device.Adc.Register(AdcChannel0, (ushort *)(&App.Data.Voltage));
+    System.Device.Adc.Register(AdcChannel1, (ushort *)(&App.Data.Current));
+    System.Device.Adc.Register(AdcTemperature, (ushort *)(&App.Data.Temperature));
+    System.Device.Systick.Register(Systick100, AppSystick100);
 }
 
 void LogicTask(void)
@@ -185,22 +185,22 @@ void LogicTask(void)
 
     App.Menu.FocusFormPointer = &App.Menu.LogoForm;     //页面焦点
 
-    TSystem.OS.DelayMs(2000);
+    System.OS.DelayMs(2000);
     
     //高频感应加热设备扫频自检，获取谐振点
     App.Menu.FocusFormPointer = &App.Menu.CheckForm;   
     for(i = 0; i < 16; i++)
     {
-        TSystem.OS.DelayMs(100);
+        System.OS.DelayMs(100);
         App.Menu.CheckForm.ChartPointer->Column[i] = i % 5;
     }
     App.Menu.FocusFormPointer = &App.Menu.WorkForm;  
 
-    TSystem.Device.Key.Enable(true);
+    System.Device.Key.Enable(true);
     //逻辑业务任务获取消息，分配处理
     while(true)
     {     
-        message = TSystem.OS.PendMessageQueue();
+        message = System.OS.PendMessageQueue();
         
         data = message & 0x00FFFFFF;
         switch(message >> 24)

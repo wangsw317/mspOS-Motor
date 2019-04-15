@@ -33,66 +33,14 @@
 
 
 
-extern void InitDO(void);
-
-extern void InitAdc(void);
-
-extern void InitUsart1(void);
-
-extern void InitUsart2(void);
-
-extern void InitKey(void);
-
-extern void InitLcd(void);
-
-extern void InitTimer(void);
-
-extern void InitMisc(void);
-
-extern void InitStorage(void);
-
-extern void InitSystick(void);
 
 
-
-
-/*******************************************************************************
-* 描述	    : 初始化设备
-*******************************************************************************/
-void InitDevice(void)
-{    
-    //InitUsart1();	
-    
-    //InitUsart2();
-
-    //InitAdc();
-
-    //InitDI();
-
-    //InitDO();
-
-    //InitKey();	
-
-    //InitLcd();
-
-    //InitTimer();
-
-    //InitStorage();
-
-    //InitMisc();
-
-    //InitSystick();
-
+CSystem::Device::Device(void)
+{
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);     // 抢占优先级|非抢占优先级,0为高
                                                         // bit3 bit2 | bit1 bit0 
                                                         //  0 ~ 3    |    0 ~ 3 
 	NVIC_SetPriority(SysTick_IRQn, 0x0E);               //    3      |      2
  	NVIC_SetPriority(PendSV_IRQn, 0x0F);                //    3      |      3
-}
-
-
-CSystem::Device::Device(void)
-{
-
 }
 

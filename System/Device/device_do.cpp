@@ -256,12 +256,6 @@ CSystem::Device::DO::DO(void)
     AppDataPointer->DO.pY3 = (bool *)&PbOut->Bit13;
     AppDataPointer->DO.pY4 = (bool *)&PbOut->Bit14;
     AppDataPointer->DO.pY5 = (bool *)&PbOut->Bit15;
-    
-    //System.Device.DO.Config = Config;
-    //System.Device.DO.Pwm.Open = Open;
-    //System.Device.DO.Pwm.Close  = Close;
-    //System.Device.DO.Pwm.SetDutyRatio = SetDutyRatio;
-    //System.Device.DO.Pwm.SetParameter = SetParameter;   
 
     Config(DoY);
 }

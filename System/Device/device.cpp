@@ -71,7 +71,7 @@ void InitDevice(void)
 
     //InitDO();
 
-    InitKey();	
+    //InitKey();	
 
     InitLcd();
 

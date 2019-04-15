@@ -170,6 +170,7 @@ typedef struct
     
     struct Device
     {     
+        #if 0 
         struct Adc
         {
             void (*Register)(AdcChannelEnum channel, ushort * dataPointer);
@@ -202,7 +203,7 @@ typedef struct
         {
             void (*Enable)(bool status);
         }Key;
-        
+#endif
         struct Misc
         {
             void (*SetBeep)(bool status);
@@ -319,6 +320,13 @@ public:
             void SetParameter(PwmEnum channel, int prescaler, int period, int dutyRatio);
             void SetDutyRatio(PwmEnum channel, int dutyRatio);
         }DO;
+
+        class Key
+        {
+        public:
+            Key(void);
+            void Enable(bool status);
+        }Key;
     }Device;
 };
 

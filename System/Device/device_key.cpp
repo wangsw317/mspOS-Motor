@@ -46,7 +46,7 @@
 
 static byte Scan = invalid;
 static int ScanCounter = 0;
-static bool Enable = false;
+static bool KeyEnable = false;
 
 static byte RemapKey(byte scan) 
 {
@@ -80,17 +80,12 @@ static byte RemapLongKey(byte scan)
     }	
 }
 
-static void EnableKey(bool status)
-{
-    Enable = status;
-}
-
 void KeySystick1000Routine(void) 
 {
     static byte Key;
     static int StateCounter = 0;
     
-    if (!Enable) return;
+    if (!KeyEnable) return;
     
     if (++StateCounter == 3) StateCounter = 0;
     switch (StateCounter)
@@ -153,7 +148,7 @@ A:                  ScanCounter = -10;
     }
 }
 
-void InitKey(void)
+CSystem::Device::Key::Key(void)
 {
  	GPIO_InitTypeDef GPIO_InitStructure;
     
@@ -183,6 +178,9 @@ void InitKey(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
  	GPIO_Init(GPIOA, &GPIO_InitStructure);
     
-    System.Device.Key.Enable = EnableKey;
 }
 
+void CSystem::Device::Key::Enable(bool status)
+{
+    KeyEnable = status;
+}

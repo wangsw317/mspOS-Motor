@@ -203,7 +203,7 @@ void LogicTask(void)
     }
     App.Menu.FocusFormPointer = &App.Menu.WorkForm;  
 
-    System.Device.Key.Enable(true);
+    TSystem.Device.Key.Enable(true);
     //逻辑业务任务获取消息，分配处理
     while(true)
     {     

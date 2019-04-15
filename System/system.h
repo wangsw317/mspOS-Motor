@@ -164,107 +164,10 @@ extern void PostMessage(MessageEnum message, uint data);
 *版本     作者            日期            说明
 *V0.1    Wangsw        2013/09/11       初始版本
 *******************************************************************************/
+
 typedef struct
 {
     void (*Init)(void);
-    
-    struct Device
-    {     
-        #if 0 
-        struct Adc
-        {
-            void (*Register)(AdcChannelEnum channel, ushort * dataPointer);
-        }Adc;
-
-        struct DI
-        {
-            void (*Config)(DiModeEnum mode);
-            void (*Register)(int * frequencyPointer, short *dutyRatioPointer);
-           
-            struct Capture
-            {
-                void (*SetParameter)(PwmEnum channel);
-            }Capture;
-        }DI;
-        
-        struct DO
-        {
-            void (*Config)(DoModeEnum mode);
-            struct Pwm
-            {
-                void (*Open)(PwmEnum channel);
-                void (*Close)(PwmEnum channel); 
-                void (*SetParameter)(PwmEnum channel, int prescaler, int period, int dutyRatio);
-                void (*SetDutyRatio)(PwmEnum channel, int dutyRatio);
-            }Pwm;
-        }DO;
-
-        struct Key
-        {
-            void (*Enable)(bool status);
-        }Key;
-
-        struct Misc
-        {
-            void (*SetBeep)(bool status);
-        }Misc;
-        
-        struct Lcd
-        {
-            void (* DisplayString)(byte y, string string);
-        }Lcd;
-        
-        struct Storage
-        {
-            struct Parameter
-            {
-                bool (*Write)(void * dataPointer);  
-            }Parameter;
-            struct Log
-            {
-                void (*Erase)(void);
-                char * (*Read)(int sequence);
-                bool (*Write)(char *fmt, ...);
-            }Log;
-        }Storage;
-
-        struct Timer
-        {
-            void (*Start)(int id, TimerModeEnum mode, int times, function functionPointer);
-            void (*Stop)(int id); 
-        }Timer;
-        
-        struct Usart2
-        {
-            void (*Register)(uint rxdFucntion);
-            void (*Write)(byte * dataPointer, int sum);
-        }Usart2;
-        struct Usart1
-        {
-            void (*Open)(void);
-            void (*Close)(void);
-            bool (*WriteByte)(byte data);
-            void (*Write)(byte * dataPointer, int sum);
-        }Usart1;
-#endif    
-
-
-
-        
-
-
-
-
-        struct Systick
-        {
-            bool (*Register)(SystickEnum type, function functionPointer);
-        }Systick;
-        
-    }Device;
-
-
-
-
 }SystemStruct;
 
 extern SystemStruct System;
@@ -385,7 +288,12 @@ public:
             void Stop(int id); 
         }Timer;
 
-
+        class Systick
+        {
+        public:
+            Systick(void);
+            bool Register(SystickEnum type, function functionPointer);
+        }Systick;
     }Device;
 };
 

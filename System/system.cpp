@@ -106,7 +106,7 @@ static void Init(void)
 
 SystemStruct System = 
 {
-    Init,   // 直接初始化Init成员，不需要赋值
+    Init   // 直接初始化Init成员，不需要赋值
 };
 
 

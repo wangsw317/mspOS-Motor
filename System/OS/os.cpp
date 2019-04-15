@@ -201,7 +201,7 @@ void CSystem::OS::CreateMenuTask(function taskPointer)
 *******************************************************************************/
 void CSystem::OS::Start(void)
 {
-    System.Device.Systick.Register(Systick1000, SystickRoutine); //注册OS节拍函数
+    TSystem.Device.Systick.Register(Systick1000, SystickRoutine); //注册OS节拍函数
 
     CurrentTaskPointer = &LogicTask;
     NextTaskPointer = CurrentTaskPointer;

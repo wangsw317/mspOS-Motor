@@ -81,7 +81,7 @@ void InitDevice(void)
 
     //InitMisc();
 
-    InitSystick();
+    //InitSystick();
 
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);     // 抢占优先级|非抢占优先级,0为高
                                                         // bit3 bit2 | bit1 bit0 

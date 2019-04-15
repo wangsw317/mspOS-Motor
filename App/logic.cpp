@@ -173,7 +173,7 @@ static void InitLogic(void)
     TSystem.Device.Adc.Register(AdcChannel0, (ushort *)(&App.Data.Voltage));
     TSystem.Device.Adc.Register(AdcChannel1, (ushort *)(&App.Data.Current));
     TSystem.Device.Adc.Register(AdcTemperature, (ushort *)(&App.Data.Temperature));
-    System.Device.Systick.Register(Systick100, AppSystick100);
+    TSystem.Device.Systick.Register(Systick100, AppSystick100);
 }
 
 void LogicTask(void)

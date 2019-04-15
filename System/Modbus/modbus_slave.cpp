@@ -424,7 +424,7 @@ void InitSlaveModbus(void)
 {
     Reset();
     
-    System.Device.Systick.Register(Systick10000, SystickRoutine);    
+    TSystem.Device.Systick.Register(Systick10000, SystickRoutine);    
 
     TSystem.Device.Usart2.Register((uint)Receive);
 }

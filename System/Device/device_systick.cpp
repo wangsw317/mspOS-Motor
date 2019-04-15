@@ -85,35 +85,7 @@ static function Systick100RegisterPointerBlock[Systick100Sum] =
 {
     EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction, EmptyFunction
 };
-/*******************************************************************************
-* 描述	    : 系统节拍注册函数，用于注册回调函数到不同速度的系统节拍数组中。
-* 输入参数  : systemTick 系统节拍速度类型 registerFunction 注册的函数指针
-* 返回参数  : bool布尔变量，返回是否成功
-*******************************************************************************/
-static bool RegisterSystick(SystickEnum type, function functionPointer)
-{
-    static byte Systick100Counter = 0;
-    static byte Systick1000Counter = 0;
-    static byte Systick10000Counter = 0;
 
-    switch(type)
-    {
-        case Systick100:
-            if (Systick100Counter == Systick100Sum) return(false);
-            Systick100RegisterPointerBlock[Systick100Counter++] = functionPointer;  
-            return(true);
-        case Systick1000:
-            if (Systick1000Counter == Systick1000Sum) return(false);
-            Systick1000RegisterPointerBlock[Systick1000Counter++] = functionPointer;   
-            return(true);
-        case Systick10000:
-            if (Systick10000Counter == Systick10000Sum) return(false);
-            Systick10000RegisterPointerBlock[Systick10000Counter++] = functionPointer;   
-            return(true);
-        default:
-            return(false);
-    }
-}
 
 /*******************************************************************************
 * 描述	    : 系统节拍中断入口，非常重要，每秒10000次，即0.1mS一次
@@ -156,14 +128,40 @@ void SysTick_Handler(void)
 }
 }
 
-void InitSystick(void)
+CSystem::Device::Systick::Systick(void)
 {
-    SysTick_Config(SystemCoreClock / Systicks);             // 设置节拍速度
-    System.Device.Systick.Register = RegisterSystick;       // 关联接口函数指针
-    
+    SysTick_Config(SystemCoreClock / Systicks);             // 设置节拍速度    
 }
 
 
+/*******************************************************************************
+* 描述	    : 系统节拍注册函数，用于注册回调函数到不同速度的系统节拍数组中。
+* 输入参数  : systemTick 系统节拍速度类型 registerFunction 注册的函数指针
+* 返回参数  : bool布尔变量，返回是否成功
+*******************************************************************************/
+bool CSystem::Device::Systick::Register(SystickEnum type, function functionPointer)
+{
+    static byte Systick100Counter = 0;
+    static byte Systick1000Counter = 0;
+    static byte Systick10000Counter = 0;
 
+    switch(type)
+    {
+        case Systick100:
+            if (Systick100Counter == Systick100Sum) return(false);
+            Systick100RegisterPointerBlock[Systick100Counter++] = functionPointer;  
+            return(true);
+        case Systick1000:
+            if (Systick1000Counter == Systick1000Sum) return(false);
+            Systick1000RegisterPointerBlock[Systick1000Counter++] = functionPointer;   
+            return(true);
+        case Systick10000:
+            if (Systick10000Counter == Systick10000Sum) return(false);
+            Systick10000RegisterPointerBlock[Systick10000Counter++] = functionPointer;   
+            return(true);
+        default:
+            return(false);
+    }
+}
 
 

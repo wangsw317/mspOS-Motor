@@ -28,8 +28,17 @@
 #include "drive.h"
 #include "system.h"
 
+void DoSystick10000Routine(void)
+{
+    *AppDataPointer->DO.pY0 = AppDataPointer->DO.Y0;   
+    *AppDataPointer->DO.pY1 = AppDataPointer->DO.Y1;
+    *AppDataPointer->DO.pY2 = AppDataPointer->DO.Y2;
+    *AppDataPointer->DO.pY3 = AppDataPointer->DO.Y3;
+    *AppDataPointer->DO.pY4 = AppDataPointer->DO.Y4;
+    *AppDataPointer->DO.pY5 = AppDataPointer->DO.Y5;
+}
 
-static void Config(DoModeEnum mode)
+void CSystem::Device::DO::Config(DoModeEnum mode)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -57,21 +66,11 @@ static void Config(DoModeEnum mode)
     }
 }
 
-void DoSystick10000Routine(void)
-{
-    *AppDataPointer->DO.pY0 = AppDataPointer->DO.Y0;   
-    *AppDataPointer->DO.pY1 = AppDataPointer->DO.Y1;
-    *AppDataPointer->DO.pY2 = AppDataPointer->DO.Y2;
-    *AppDataPointer->DO.pY3 = AppDataPointer->DO.Y3;
-    *AppDataPointer->DO.pY4 = AppDataPointer->DO.Y4;
-    *AppDataPointer->DO.pY5 = AppDataPointer->DO.Y5;
-}
-
 /*******************************************************************************
 * 描述	    : 打开对应通道的PWM，这里默认系统时钟频率是 72MHz
 * 输入参数  : channel: 开启哪路Pwm
 *******************************************************************************/
-static void Open(PwmEnum channel)
+void CSystem::Device::DO::Open(PwmEnum channel)
 {
     switch(channel)
     {
@@ -101,7 +100,7 @@ static void Open(PwmEnum channel)
 * 描述	    : 关闭通道
 * 输入参数  : channel:哪一路Pwm
 *******************************************************************************/
-static void Close(PwmEnum channel)
+void CSystem::Device::DO::Close(PwmEnum channel)
 {   
     switch(channel)
     {
@@ -131,7 +130,7 @@ static void Close(PwmEnum channel)
 * 描述	    : 设置PWM占空比
 * 输入参数  : channel:哪一路Pwm
 *******************************************************************************/
-static void SetDutyRatio(PwmEnum channel, int dutyRatio)
+void CSystem::Device::DO::SetDutyRatio(PwmEnum channel, int dutyRatio)
 {
     switch(channel)
     {
@@ -163,7 +162,7 @@ static void SetDutyRatio(PwmEnum channel, int dutyRatio)
 *           : PwmChannel0~PwmChannel1:Prescaler < 65536, Period < 65536。  16bit计数器
 *           : PwmChannel3~PwmChannel5:Prescaler < 65536, Period < 65536。  16bit计数器
 *******************************************************************************/
-static void SetParameter(PwmEnum channel, int prescaler, int period, int dutyRatio)
+void CSystem::Device::DO::SetParameter(PwmEnum channel, int prescaler, int period, int dutyRatio)
 {
     
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
@@ -249,7 +248,7 @@ static void SetParameter(PwmEnum channel, int prescaler, int period, int dutyRat
 /*******************************************************************************
 * 描述	    : 初始化PWM设备
 *******************************************************************************/
-void InitDO(void)
+CSystem::Device::DO::DO(void)
 {    
     AppDataPointer->DO.pY0 = (bool *)&PbOut->Bit0;   
     AppDataPointer->DO.pY1 = (bool *)&PbOut->Bit1;
@@ -258,11 +257,11 @@ void InitDO(void)
     AppDataPointer->DO.pY4 = (bool *)&PbOut->Bit14;
     AppDataPointer->DO.pY5 = (bool *)&PbOut->Bit15;
     
-    System.Device.DO.Config = Config;
-    System.Device.DO.Pwm.Open = Open;
-    System.Device.DO.Pwm.Close  = Close;
-    System.Device.DO.Pwm.SetDutyRatio = SetDutyRatio;
-    System.Device.DO.Pwm.SetParameter = SetParameter;   
+    //System.Device.DO.Config = Config;
+    //System.Device.DO.Pwm.Open = Open;
+    //System.Device.DO.Pwm.Close  = Close;
+    //System.Device.DO.Pwm.SetDutyRatio = SetDutyRatio;
+    //System.Device.DO.Pwm.SetParameter = SetParameter;   
 
     Config(DoY);
 }

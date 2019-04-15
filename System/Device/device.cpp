@@ -69,7 +69,7 @@ void InitDevice(void)
 
     //InitDI();
 
-    InitDO();
+    //InitDO();
 
     InitKey();	
 

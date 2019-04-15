@@ -114,10 +114,10 @@ void KeyProcess(KeyEnum key)
             break;
         case KeyLongAuxUp:          // 打开PWMChannel3(测试)
             //System.Device.DO.Config(DOPWM);
-            //System.Device.DO.Pwm.SetParameter(PwmChannel3, 18000, 1000, 500);
+            //System.Device.DO.SetParameter(PwmChannel3, 18000, 1000, 500);
 
-            //System.Device.DO.Pwm.SetDutyRatio(PwmChannel4, 500);
-            //System.Device.DO.Pwm.Open(PwmChannel4);
+            //System.Device.DO.SetDutyRatio(PwmChannel4, 500);
+            //System.Device.DO.Open(PwmChannel4);
 
             *App.Data.DO.pY0 = 0;
             *App.Data.DO.pY1 = 1;
@@ -130,7 +130,7 @@ void KeyProcess(KeyEnum key)
             printf(System.Device.Storage.Log.Read(-1));
             break;
         case KeyLongAuxDown:        // 关闭PWMChannel0(测试)
-            System.Device.DO.Pwm.Close(PwmChannel3);
+            TSystem.Device.DO.Close(PwmChannel3);
             break;
             
         case KeySave:               // 焦点数据存储

@@ -308,6 +308,17 @@ public:
         public:
             DI(void);
         }DI;
+
+        class DO
+        {
+        public:
+            DO(void);
+            void Config(DoModeEnum mode);
+            void Open(PwmEnum channel);
+            void Close(PwmEnum channel); 
+            void SetParameter(PwmEnum channel, int prescaler, int period, int dutyRatio);
+            void SetDutyRatio(PwmEnum channel, int dutyRatio);
+        }DO;
     }Device;
 };
 

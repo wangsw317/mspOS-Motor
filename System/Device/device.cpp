@@ -63,7 +63,7 @@ void InitDevice(void)
 {    
     InitUsart1();	
     
-    InitUsart2();
+    //InitUsart2();
 
     //InitAdc();
 
@@ -75,7 +75,7 @@ void InitDevice(void)
 
     //InitLcd();
 
-    InitTimer();
+    //InitTimer();
 
     //InitStorage();
 

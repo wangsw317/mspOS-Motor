@@ -227,6 +227,18 @@ typedef struct
                 bool (*Write)(char *fmt, ...);
             }Log;
         }Storage;
+
+        struct Timer
+        {
+            void (*Start)(int id, TimerModeEnum mode, int times, function functionPointer);
+            void (*Stop)(int id); 
+        }Timer;
+        
+        struct Usart2
+        {
+            void (*Register)(uint rxdFucntion);
+            void (*Write)(byte * dataPointer, int sum);
+        }Usart2;
 #endif    
         struct Usart1
         {
@@ -236,17 +248,9 @@ typedef struct
             void (*Write)(byte * dataPointer, int sum);
         }Usart1;
 
-        struct Usart2
-        {
-            void (*Register)(uint rxdFucntion);
-            void (*Write)(byte * dataPointer, int sum);
-        }Usart2;
+
         
-        struct Timer
-        {
-            void (*Start)(int id, TimerModeEnum mode, int times, function functionPointer);
-            void (*Stop)(int id); 
-        }Timer;
+
 
 
 
@@ -299,6 +303,15 @@ public:
     {     
     public:
         Device(void);
+
+        class Usart2
+        {
+        public:
+            Usart2(void);
+            void Register(uint rxdFucntion);
+            void Write(byte * dataPointer, int sum);
+        }Usart2;
+        
         class Adc
         {
         public:
@@ -353,6 +366,15 @@ public:
             char * ReadLog(int sequence);
             bool WriteLog(char *fmt, ...);
         }Storage;
+
+        class Timer
+        {
+        public:
+            void Start(int id, TimerModeEnum mode, int times, function functionPointer);
+            void Stop(int id); 
+        }Timer;
+
+
     }Device;
 };
 

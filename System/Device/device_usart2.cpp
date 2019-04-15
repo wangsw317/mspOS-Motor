@@ -31,10 +31,7 @@ static void UsartDummy(byte data){;}
 typedef void (*RxdFunction)(byte data);
 static RxdFunction Rxd = UsartDummy;
 
-static void Register(uint rxdFucntion)
-{
-    Rxd = (RxdFunction)rxdFucntion;
-}
+
 #ifdef __cplusplus
  extern "C" {
 #endif 
@@ -72,9 +69,12 @@ void USART2_IRQHandler(void)
 #endif 
 }
 
+void CSystem::Device::Usart2::Register(uint rxdFucntion)
+{
+    Rxd = (RxdFunction)rxdFucntion;
+}
 
-
-static void Write(byte * dataPointer, int sum)
+void CSystem::Device::Usart2::Write(byte * dataPointer, int sum)
 {
     DMA_Cmd(DMA1_Channel7, DISABLE);
     DMA1_Channel7->CMAR = (uint)dataPointer;
@@ -83,7 +83,7 @@ static void Write(byte * dataPointer, int sum)
 }
 
 
-void InitUsart2(void)
+CSystem::Device::Usart2::Usart2(void)
 {
 
 // GPIO∂Àø⁄…Ë÷√
@@ -146,7 +146,5 @@ void InitUsart2(void)
   
     //DMA_Cmd(DMA1_Channel7, ENABLE); 
 
-    System.Device.Usart2.Register = Register;
-    System.Device.Usart2.Write = Write; 
 }
 

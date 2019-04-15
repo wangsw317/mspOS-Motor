@@ -87,7 +87,7 @@ void TimerSystick1000Routine(void)
 *           : registerFunction: 注册回调执行函数，延时超时后，执行此函数。
 * 返回参数  : bool类型
 *******************************************************************************/
-static void Start(int id, TimerModeEnum mode, int times, function functionPointer)
+void CSystem::Device::Timer::Start(int id, TimerModeEnum mode, int times, function functionPointer)
 {
     TimerBlock[id].Times  = times;
     TimerBlock[id].RegisterFunction = functionPointer;
@@ -105,13 +105,13 @@ static void Start(int id, TimerModeEnum mode, int times, function functionPointe
 * 输入参数  : id为0、1、2...
 * 返回值    : 无
 *******************************************************************************/
-static void Stop(int id) 
+void CSystem::Device::Timer::Stop(int id) 
 {
     ResetBit(State, id);
 }
-
-void InitTimer(void)
+#if 0
+CSystem::Device::Timer::Timer(void)
 {
-    System.Device.Timer.Start = Start;
-    System.Device.Timer.Stop = Stop; 
+	;
 }
+#endif

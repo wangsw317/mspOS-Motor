@@ -151,14 +151,7 @@ void KeyProcess(KeyEnum key)
             App.Data.OnOff = on;
             break;
         case KeyLongStart:          // 定时器(测试)
-            System.Device.Timer.Start(0, TimerMessage, 1000, FormFocusProcess);
-            System.Device.Timer.Start(1, TimerMessage, 2000, FormFocusProcess);
-            System.Device.Timer.Start(2, TimerMessage, 3000, FormFocusProcess);
-            System.Device.Timer.Start(3, TimerMessage, 4000, FormFocusProcess);
-            System.Device.Timer.Start(4, TimerMessage, 5000, FormFocusProcess);
-            System.Device.Timer.Start(5, TimerMessage, 6000, FormFocusProcess);
-            System.Device.Timer.Start(6, TimerMessage, 7000, FormFocusProcess);
-            System.Device.Timer.Start(7, TimerMessage, 7000, FormFocusProcess);
+            TSystem.Device.Timer.Start(0, TimerMessage, 1000, FormFocusProcess);
             break;
             
         case KeyStop:               //停止运行

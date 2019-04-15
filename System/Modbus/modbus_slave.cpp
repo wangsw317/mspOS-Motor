@@ -68,7 +68,7 @@ static ushort RxdCounter;               // 接收计数
 static ushort RxdTimeout;               // 接收超时成帧
 #define GetBool(nodePointer) *(bool *)((uint)AppDataPointer + (uint)nodePointer)
 #define GetUshort(nodePointer) *(ushort *)((uint)AppDataPointer + (uint)nodePointer)
-#define UsartWrite(pointer, sum) System.Device.Usart2.Write(pointer, sum)
+#define UsartWrite(pointer, sum) TSystem.Device.Usart2.Write(pointer, sum)
 /*************************************************************************************
 * MODBUS主机响应函数
 * 传入：数据开始地址，长度，（1）是（0）否帧的开始？
@@ -426,7 +426,7 @@ void InitSlaveModbus(void)
     
     System.Device.Systick.Register(Systick10000, SystickRoutine);    
 
-    System.Device.Usart2.Register((uint)Receive);
+    TSystem.Device.Usart2.Register((uint)Receive);
 }
  
 

@@ -61,7 +61,7 @@ extern void InitSystick(void);
 *******************************************************************************/
 void InitDevice(void)
 {    
-    InitUsart1();	
+    //InitUsart1();	
     
     //InitUsart2();
 

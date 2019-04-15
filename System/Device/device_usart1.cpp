@@ -52,44 +52,6 @@ static void InitQueue(void)
     TxdQueue.Entries = 0;
 }
 
-/*******************************************************************************
-* 描述	    : 串口1发送一个字节
-* 输入参数  : data 字节类型，发送参数
-* 返回参数  : bool 类型
-*******************************************************************************/
-static bool WriteByte(byte data) 
-{
-    if (TxdQueue.Entries >= TxdBufferSum) return (false);
-    
-    *TxdQueue.In++ = data;	
-    
-    if (TxdQueue.In > TxdQueue.End) 
-        TxdQueue.In = TxdQueue.Start;
-
-    EnterCritical();
-    TxdQueue.Entries++;
-    ExitCritical();
-    return (true);
-}
-
-/*******************************************************************************
-* 描述	    : 串口1发送一串数据
-* 输入参数  : dataPointer 数据指针，sum 数据总数
-*******************************************************************************/
-static void Write(byte * dataPointer, int sum)
-{
-    if (sum)
-    {
-        while (sum--) 
-            WriteByte(*dataPointer++);
-    }
-    else
-    {
-        while (*dataPointer) 
-            WriteByte(*dataPointer++);
-    }
-}
-
 #ifdef __cplusplus
  extern "C" {
 #endif 
@@ -161,19 +123,56 @@ void USART1_IRQHandler(void)
 		USART_ReceiveData(USART1);
 } 
 
-static void Open(void)
+void CSystem::Device::Usart1::Open(void)
 {
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
     USART_Cmd(USART1, ENABLE);
 }
 
-static void Close(void)
+void CSystem::Device::Usart1::Close(void)
 {
     USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);
     USART_Cmd(USART1, DISABLE);
 }
-     
-void InitUsart1(void) 
+
+/*******************************************************************************
+* 描述	    : 串口1发送一个字节
+* 输入参数  : data 字节类型，发送参数
+* 返回参数  : bool 类型
+*******************************************************************************/
+void CSystem::Device::Usart1::WriteByte(byte data) 
+{
+    Assert(TxdQueue.Entries < TxdBufferSum);
+    
+    *TxdQueue.In++ = data;	
+    
+    if (TxdQueue.In > TxdQueue.End) 
+        TxdQueue.In = TxdQueue.Start;
+
+    EnterCritical();
+    TxdQueue.Entries++;
+    ExitCritical();
+}
+
+/*******************************************************************************
+* 描述	    : 串口1发送一串数据
+* 输入参数  : dataPointer 数据指针，sum 数据总数
+*******************************************************************************/
+void CSystem::Device::Usart1::Write(byte * dataPointer, int sum)
+{
+    if (sum)
+    {
+        while (sum--) 
+            WriteByte(*dataPointer++);
+    }
+    else
+    {
+        while (*dataPointer) 
+            WriteByte(*dataPointer++);
+    }
+}
+
+CSystem::Device::Usart1::Usart1(void) 
 {
 //GPIO端口设置
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -215,11 +214,6 @@ void InitUsart1(void)
     USART_Cmd(USART1, ENABLE);                              //使能串口 
 
     InitQueue();
-
-    System.Device.Usart1.Open = Open;
-    System.Device.Usart1.Close = Close;
-    System.Device.Usart1.WriteByte = WriteByte;
-    System.Device.Usart1.Write = Write;
 }
 
 

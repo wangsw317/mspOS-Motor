@@ -239,7 +239,6 @@ typedef struct
             void (*Register)(uint rxdFucntion);
             void (*Write)(byte * dataPointer, int sum);
         }Usart2;
-#endif    
         struct Usart1
         {
             void (*Open)(void);
@@ -247,6 +246,8 @@ typedef struct
             bool (*WriteByte)(byte data);
             void (*Write)(byte * dataPointer, int sum);
         }Usart1;
+#endif    
+
 
 
         
@@ -303,7 +304,17 @@ public:
     {     
     public:
         Device(void);
-
+        
+        class Usart1
+        {
+        public:
+            Usart1(void);
+            void Open(void);
+            void Close(void);
+            void WriteByte(byte data);
+            void Write(byte * dataPointer, int sum);
+        }Usart1;
+        
         class Usart2
         {
         public:

@@ -109,9 +109,4 @@ void CSystem::Device::Timer::Stop(int id)
 {
     ResetBit(State, id);
 }
-#if 0
-CSystem::Device::Timer::Timer(void)
-{
-	;
-}
-#endif
+

@@ -97,20 +97,7 @@ static void SendData(byte data)
 }
 
 
-/*******************************************************************************
-* 描述	    : Lcd屏显示函数，显示一整行16个字母或者8个汉字，汉字必须要在偶数位置开始
-* 输入参数  : y: 行号0、1、2、3
-*           : string 字符串，必须要16个char，一个汉字等于两个char
-*******************************************************************************/
-static void LcdDisplayString(byte y, string string)
-{ 
-    byte i;
-    	
-    SendInstruct(Array[y]);
 
-    for (i = 0; i < 16; i++)
-        SendData(*string++);
-}
 
 #if 0
 static void LcdDisplayGraphy(void)
@@ -139,7 +126,7 @@ static void LcdDisplayGraphy(void)
 }
 #endif
 
-void InitLcd(void)
+CSystem::Device::Lcd::Lcd(void)
 {
     GPIO_InitTypeDef  GPIO_InitStructure;
 
@@ -159,10 +146,23 @@ void InitLcd(void)
     SendInstruct(0x02);
     SendInstruct(0x80);
     SendInstruct(0x01);
-    System.Device.Lcd.DisplayString = LcdDisplayString;
+//    System.Device.Lcd.DisplayString = LcdDisplayString;
 }
 
+/*******************************************************************************
+* 描述	    : Lcd屏显示函数，显示一整行16个字母或者8个汉字，汉字必须要在偶数位置开始
+* 输入参数  : y: 行号0、1、2、3
+*           : string 字符串，必须要16个char，一个汉字等于两个char
+*******************************************************************************/
+void CSystem::Device::Lcd::DisplayString(byte y, string string)
+{ 
+    byte i;
+    	
+    SendInstruct(Array[y]);
 
+    for (i = 0; i < 16; i++)
+        SendData(*string++);
+}
 
 
 

@@ -35,12 +35,9 @@
 
 
 
-static void SetBeep(bool status)
-{
-    PinBeep = status;
-}
 
-void InitMisc(void)
+
+CSystem::Device::Misc::Misc(void)
 {
  	GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -51,6 +48,10 @@ void InitMisc(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
  	GPIO_Init(GPIOA, &GPIO_InitStructure);
     
-    System.Device.Misc.SetBeep = SetBeep;
+    //System.Device.Misc.SetBeep = SetBeep;
 }
 
+void CSystem::Device::Misc::SetBeep(bool status)
+{
+    PinBeep = status;
+}

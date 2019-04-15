@@ -275,7 +275,7 @@ static void Update(void)
             }
         }
         if (update)
-            System.Device.Lcd.DisplayString(i, VirtualLcd[i]);
+            TSystem.Device.Lcd.DisplayString(i, VirtualLcd[i]);
     }
 #endif
 #ifdef msMenu

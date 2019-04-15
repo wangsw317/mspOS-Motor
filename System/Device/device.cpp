@@ -73,13 +73,13 @@ void InitDevice(void)
 
     //InitKey();	
 
-    InitLcd();
+    //InitLcd();
 
     InitTimer();
 
     InitStorage();
 
-    InitMisc();
+    //InitMisc();
 
     InitSystick();
 

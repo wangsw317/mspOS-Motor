@@ -203,7 +203,7 @@ typedef struct
         {
             void (*Enable)(bool status);
         }Key;
-#endif
+
         struct Misc
         {
             void (*SetBeep)(bool status);
@@ -213,7 +213,7 @@ typedef struct
         {
             void (* DisplayString)(byte y, string string);
         }Lcd;
-        
+#endif    
         struct Usart1
         {
             void (*Open)(void);
@@ -327,6 +327,20 @@ public:
             Key(void);
             void Enable(bool status);
         }Key;
+
+        class Lcd
+        {
+        public:
+            Lcd(void);
+            void DisplayString(byte y, string string);
+        }Lcd;
+
+        class Misc
+        {
+        public:
+            Misc(void);
+            void SetBeep(bool status);
+        }Misc;
     }Device;
 };
 

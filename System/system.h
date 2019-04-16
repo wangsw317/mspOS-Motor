@@ -170,7 +170,6 @@ extern void PostMessage(MessageEnum message, uint data);
 class CSystem
 {
 public:
-    CSystem(void);
     class Gui
     {
     public:
@@ -200,7 +199,11 @@ public:
     class Device
     {     
     public:
-        Device(void);
+        class Init
+        {
+        public:
+            Init(void);
+        }Init;
         
         class Usart1
         {

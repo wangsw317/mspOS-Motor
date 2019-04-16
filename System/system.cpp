@@ -87,16 +87,6 @@ void PostMessage(MessageEnum message, uint data)
 
 
 
-
-
-
-CSystem::CSystem(void)
-{
-    DisableIrq();
-    
-    RomBase = (uint)PostMessage & 0xFF000000;
-    RamBase = (uint)(&RamBase) & 0xFF000000;
-}
-
 CSystem System;
+
 

@@ -92,9 +92,7 @@ static function Systick100RegisterPointerBlock[Systick100Sum] =
 *           : 系统节拍通过switch细分为每秒1000次，每秒100次的例行节拍
 *           : 同层直接调用，高层采用注册调用
 *******************************************************************************/
-
-extern "C" {
-void SysTick_Handler(void)
+extern "C" void SysTick_Handler(void)
 {
     byte div;
     static byte Counter = 0;
@@ -125,7 +123,6 @@ void SysTick_Handler(void)
             }
             break;
     }    
-}
 }
 
 CSystem::Device::Systick::Systick(void)

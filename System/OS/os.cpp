@@ -117,8 +117,7 @@ static void InitTask(TaskStruct * task, uint * sp)
     task->Delay = 0;
 }
 
-extern "C" {
-__asm void PendSV_Handler(void)
+extern "C" __asm void PendSV_Handler(void)
 {
   IMPORT  CurrentTaskPointer
   IMPORT  NextTaskPointer
@@ -146,7 +145,7 @@ __asm void PendSV_Handler(void)
     BX      LR                          // ∑µªÿ
     NOP
 }
-}
+
 
 /*******************************************************************************
 * √Ë ˆ	    : »ŒŒÒ«–ªª

@@ -52,31 +52,6 @@ static void InitQueue(void)
     TxdQueue.Entries = 0;
 }
 
-#ifdef __cplusplus
- extern "C" {
-#endif 
-#if 0
-#pragma import(__use_no_semihosting)             //标准库需要的支持函数    
-
-struct __FILE { 	int handle;  }; 
-FILE __stdout;
-
-_sys_exit(int x) {     x = x; }
-
-
-int fputc(int ch, FILE *f)
-{
-    //if (ch == '\n')                         //换行符
-    //    WriteByte('\r');            //增加回车符
-
-    //WriteByte((byte)ch);
-
-    return ch;
-}
-     #endif
-#ifdef __cplusplus
-}
-#endif 
 /*******************************************************************************
 * 描述	    : 系统节拍1000/S,即1mS一次调用此服务程序发送缓冲区数据
 *******************************************************************************/
@@ -97,18 +72,11 @@ void Usart1Systick1000Routine(void)
     TxdQueue.Entries--;
     ExitCritical();
 }
-#ifdef __cplusplus
- extern "C" {
-#endif 
-extern void USART1_IRQHandler(void); 
-#ifdef __cplusplus
-}
-#endif 
 
 /*******************************************************************************
 * 描述	    : 串口中断处理函数
 *******************************************************************************/
-void USART1_IRQHandler(void) 
+extern "C" void USART1_IRQHandler(void) 
 {
     byte data;
     
@@ -135,12 +103,26 @@ void CSystem::Device::Usart1::Close(void)
     USART_Cmd(USART1, DISABLE);
 }
 
+extern "C" void PrintfWriteByte(byte data) 
+{
+    Assert(TxdQueue.Entries < TxdBufferSum);
+    
+    *TxdQueue.In++ = data;	
+    
+    if (TxdQueue.In > TxdQueue.End) 
+        TxdQueue.In = TxdQueue.Start;
+
+    EnterCritical();
+    TxdQueue.Entries++;
+    ExitCritical();
+}
+
 /*******************************************************************************
 * 描述	    : 串口1发送一个字节
 * 输入参数  : data 字节类型，发送参数
 * 返回参数  : bool 类型
 *******************************************************************************/
-void CSystem::Device::Usart1::WriteByte(byte data) 
+extern "C" void CSystem::Device::Usart1::WriteByte(byte data) 
 {
     Assert(TxdQueue.Entries < TxdBufferSum);
     

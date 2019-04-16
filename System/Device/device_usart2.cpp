@@ -32,14 +32,8 @@ typedef void (*RxdFunction)(byte data);
 static RxdFunction Rxd = UsartDummy;
 
 
-#ifdef __cplusplus
- extern "C" {
-#endif 
-extern void USART2_IRQHandler(void);
-#ifdef __cplusplus
-}
-#endif 
-void USART2_IRQHandler(void)
+
+extern "C" void USART2_IRQHandler(void)
 { 
     byte data;  
 #if 0

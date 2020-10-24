@@ -31,22 +31,11 @@
 
 typedef struct
 {
-    int Frequency;                 // Frq
-    int PowerPercent;
-    int Power;
     int Voltage;
     int Current;
-    int Temperature;  
     int OnOff;    
 
-    int MaxPower;
-    int MaxTemperature;
-    int MaxFrequency;
-    int MaxFrequencyOffset;
-    float MaxPress;
-    int State;
-
-// 以下为系统保留数据，系统层直接使用
+    // 以下为系统保留数据，系统层直接使用
     uint Systick1000;
     RtcStruct Rtc;
 
@@ -64,16 +53,6 @@ typedef struct
     PidStruct Pid;
 }DataStruct;
 
-typedef struct
-{
-    Form LogoForm;
-    Form CheckForm;
-    Form WorkForm;
-    Form SetupForm;
-    Form ServiceForm;
-    Form PortForm;
-    Form * FocusFormPointer;
-}MenuStruct;
 
 #endif /*__Data_H*/
 

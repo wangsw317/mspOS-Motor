@@ -66,7 +66,7 @@ void TimerSystick1000Routine(void)
             {
                 ResetBit(State, i);
                 if(GetBit(Mode, i)) 
-                    PostMessage(MessageTimer, (uint)(TimerBlock[i].RegisterFunction) - RomBase);
+                    System.PostMessage(MessageTimer, (uint)(TimerBlock[i].RegisterFunction) - RomBase);
                 else 
                     TimerBlock[i].RegisterFunction(); 
             }

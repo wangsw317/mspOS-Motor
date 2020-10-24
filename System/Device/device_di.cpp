@@ -30,27 +30,16 @@
 #include "system.h"
 
 
-void DiSystick10000Routine(void)
-{
-    AppDataPointer->DI.X0 = *AppDataPointer->DI.pX0;
-    AppDataPointer->DI.X1 = *AppDataPointer->DI.pX1;
-    AppDataPointer->DI.X2 = *AppDataPointer->DI.pX2;
-    AppDataPointer->DI.X3 = *AppDataPointer->DI.pX3;
-}
+
 
 CSystem::Device::DI::DI(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     
-    AppDataPointer->DI.pX0 = (bool *)&PaIn->Bit4; 
-    AppDataPointer->DI.pX1 = (bool *)&PaIn->Bit5;
-    AppDataPointer->DI.pX2 = (bool *)&PaIn->Bit6;
-    AppDataPointer->DI.pX3 = (bool *)&PaIn->Bit7;
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
     GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 }
 

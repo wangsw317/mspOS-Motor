@@ -38,7 +38,6 @@ class CApp
 public:
     CApp(void);
     DataStruct Data;
-    MenuStruct Menu;
 };
 
 extern CApp App;

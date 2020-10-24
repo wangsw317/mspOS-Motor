@@ -145,7 +145,7 @@ extern ushort CriticalNesting;
 extern uint RomBase;
 extern uint RamBase;
 extern DataStruct * AppDataPointer;
-extern MenuStruct * AppMenuPointer;
+
 
 extern void Delay(int times);
 
@@ -170,32 +170,10 @@ extern void PostMessage(MessageEnum message, uint data);
 class CSystem
 {
 public:
-    class Gui
-    {
-    public:
-        Gui(void);
-        void Parse(Form * formPointer);
-        void AddLabel(Form * formPointer, Label *labelPointer);
-        void AddTextBox(Form * formPointer, TextBox *textBoxPointer);
-        void InitForm(Form *formPointer);
-        void SwitchTextBoxFocus(void);
-        void ModifyTextBoxData(KeyEnum key);
-        void AddMessage(int id, int x, int y, char *fmt, ...);
-        void DeleteMessage(int id);
-    }Gui;
+    CSystem(void);
+    bool PostMessage(MessageEnum message, uint data);
+    uint PendMessageQueue(void);
     
-    class OS
-    {
-    public:
-        OS(void);
-        void CreateLogicTask(function taskPointer);
-        void CreateMenuTask(function taskPointer);
-        void Start(void);
-        bool PostMessageQueue(uint message);
-        uint PendMessageQueue(void);
-        void DelayMs(int times); 
-    }OS;
-
     class Device
     {     
     public:
@@ -204,7 +182,7 @@ public:
         public:
             Init(void);
         }Init;
-        
+#if 0
         class Usart1
         {
         public:
@@ -222,12 +200,19 @@ public:
             void Register(uint rxdFucntion);
             void Write(byte * dataPointer, int sum);
         }Usart2;
+#endif
+        class Usart3
+        {
+        public:
+            Usart3(void);
+            void WriteByte(byte data);
+            void Write(byte * dataPointer, int sum);
+        }Usart3;
         
         class Adc
         {
         public:
             Adc(void);
-            void Register(AdcChannelEnum channel, ushort * dataPointer);
         }Adc;
         
         class DI
@@ -240,13 +225,8 @@ public:
         {
         public:
             DO(void);
-            void Config(DoModeEnum mode);
-            void Open(PwmEnum channel);
-            void Close(PwmEnum channel); 
-            void SetParameter(PwmEnum channel, int prescaler, int period, int dutyRatio);
-            void SetDutyRatio(PwmEnum channel, int dutyRatio);
         }DO;
-
+#if 0
         class Key
         {
         public:
@@ -260,12 +240,14 @@ public:
             Lcd(void);
             void DisplayString(byte y, string string);
         }Lcd;
-
+#endif
         class Misc
         {
         public:
             Misc(void);
-            void SetBeep(bool status);
+            void Led(bool enable);
+            void SetDA1(int dutyRatio);
+            void SetDA2(int dutyRatio);
         }Misc;
         
         class Storage

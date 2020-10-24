@@ -25,6 +25,19 @@
 
 #include "system.h"
 
+typedef struct                              // 定义队列类型
+{
+    uint    *   Start;                      // 指向队列开始
+    uint    *   End;                        // 指向队列结束
+    uint    *   In;                         // 插入一个消息
+    uint    *   Out;                        // 取出一个消息
+    ushort      Entries;                    // 消息长度
+} QueueStruct;
+
+#define QueueBufferSum      40              // 消息队列深度
+static QueueStruct MessageQueue;
+static uint QueueBuffer[QueueBufferSum];                    // 业务逻辑消息队列
+
 uint Empty;
 void Dummy(void) {};
 
@@ -33,7 +46,6 @@ ushort CriticalNesting = 0;
 uint RomBase;
 uint RamBase;
 DataStruct * AppDataPointer;
-MenuStruct * AppMenuPointer;
 
 static const byte AsciiArray[16] = 
 {
@@ -79,14 +91,55 @@ byte Ascii(byte hex)
 *             data: 消息值
 * 返回参数  : 无
 *******************************************************************************/
-void PostMessage(MessageEnum message, uint data)
+bool CSystem::PostMessage(MessageEnum message, uint data)
 {
     data |= (uint)message << 24;
-    System.OS.PostMessageQueue(data);	
+
+    if (MessageQueue.Entries >= QueueBufferSum)
+    {                                                              
+        return (false);
+    }
+
+    EnterCritical();
+    MessageQueue.Entries++;
+    ExitCritical();
+    
+    *MessageQueue.In++ = data;
+    if (MessageQueue.In > MessageQueue.End)
+       	MessageQueue.In = MessageQueue.Start;    
+
+    return true;
 }
 
+uint CSystem::PendMessageQueue(void)
+{
+    uint message;
+		
+    if (MessageQueue.Entries > 0)
+    {                    
+       	message = *MessageQueue.Out++;
 
+        EnterCritical();
+       	MessageQueue.Entries--;
+        ExitCritical();
+        
+       	if (MessageQueue.Out > MessageQueue.End) 
+            MessageQueue.Out = MessageQueue.Start;
+        
+       	return (message);
+    }
+
+    return 0;
+}
+
+CSystem::CSystem(void) 
+{
+    MessageQueue.Start   = QueueBuffer;
+    MessageQueue.End     = QueueBuffer + QueueBufferSum - 1;
+    MessageQueue.In      = MessageQueue.Start;
+    MessageQueue.Out     = MessageQueue.Start;
+    MessageQueue.Entries = 0;	
+}
 
 CSystem System;
-
 

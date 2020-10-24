@@ -56,10 +56,8 @@ extern void DoSystick10000Routine(void);
  
 extern void AdcSystick10000Routine(void);
  
-extern void Usart1Systick1000Routine(void);
- 
-extern void KeySystick1000Routine(void);
- 
+extern void Usart3Systick1000Routine(void);
+  
 extern void TimerSystick1000Routine(void);
 
 #define Systicks 10000     // 每秒种产生中断的次数，也就是节拍数
@@ -100,8 +98,6 @@ extern "C" void SysTick_Handler(void)
     Systick10000RegisterPointerBlock[0]();
     Systick10000RegisterPointerBlock[1]();
     AdcSystick10000Routine();
-    DiSystick10000Routine();
-    DoSystick10000Routine();
     div = Counter / 10;
     switch(Counter % 10)
     {
@@ -111,9 +107,9 @@ extern "C" void SysTick_Handler(void)
         case 3: Systick1000RegisterPointerBlock[3](); break;
         case 4: Systick100RegisterPointerBlock[div]();break;
         case 5: AppDataPointer->Systick1000++;        break;
-        case 6: Usart1Systick1000Routine();           break;
+        case 6: Usart3Systick1000Routine();           break;
         case 7: TimerSystick1000Routine();            break;
-        case 8: KeySystick1000Routine();               break;
+        case 8:               break;
         case 9:
             switch(div)
             {

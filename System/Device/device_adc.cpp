@@ -30,33 +30,11 @@
 #include "drive.h"
 #include "system.h"
 
-#define Sum         5       // 4通道
+#define Sum         4       // 4通道
 #define Depth       8       // 每通道采8次
 
 
 static ushort DmaBuffer[Depth][Sum];
-static ushort Adc[Sum - 1];
-
-static ushort NullValue;
-static ushort * RegisterPointerBlock[Sum];
-
-
-static void InitRegisterBlock(void)
-{
-    int i;
-    for (i = 0; i < Sum; i++)
-        RegisterPointerBlock[i] = &NullValue;
-}
-
-
-
-static void PortRegister(void)
-{
-    AppDataPointer->Adc.pA0 = &Adc[0];
-    AppDataPointer->Adc.pA1 = &Adc[1];
-    AppDataPointer->Adc.pA2 = &Adc[2];
-    AppDataPointer->Adc.pA3 = &Adc[3];
-}
 
 
 /*******************************************************************************
@@ -66,30 +44,12 @@ void AdcSystick10000Routine(void)
 {
     int i, j;
     uint acc;
-    float temp;
     for (i = 0; i < Sum; i++)
     {
         acc = 0;
         for (j = 0; j < Depth; j++)
             acc = acc + DmaBuffer[j][i];
-        
-        acc= acc / Depth;
-        if (i < 4)
-        {   
-            Adc[i] = acc;
-            *RegisterPointerBlock[i] = acc;
-        }
-        else
-        {
-            temp = acc;
-            temp = (1.43 - (temp / 4096 * 3.3)) / 0.0043 + 25;              // 芯片温度公式
-            *RegisterPointerBlock[i] = temp;                                // 误差可以达到45度
-        }
     }
-    AppDataPointer->Adc.A0 = Adc[0];
-    AppDataPointer->Adc.A1 = Adc[1];
-    AppDataPointer->Adc.A2 = Adc[2];
-    AppDataPointer->Adc.A3 = Adc[3];
 }
 
 CSystem::Device::Adc::Adc(void)
@@ -100,10 +60,10 @@ CSystem::Device::Adc::Adc(void)
     DMA_InitTypeDef DMA_InitStructure;
 
     // IO
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC | RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_ADC1, ENABLE);
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     // ADC
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);                                       //12MHz
@@ -117,11 +77,10 @@ CSystem::Device::Adc::Adc(void)
     ADC_InitStructure.ADC_NbrOfChannel = Sum;
     ADC_Init(ADC1, &ADC_InitStructure);
 
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1 , ADC_SampleTime_7Cycles5);
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_11, 2 , ADC_SampleTime_7Cycles5);
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_12, 3 , ADC_SampleTime_7Cycles5);
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_13, 4 , ADC_SampleTime_7Cycles5);
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_16, 5 , ADC_SampleTime_28Cycles5);   // 芯片温度
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1 , ADC_SampleTime_7Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 2 , ADC_SampleTime_7Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 3 , ADC_SampleTime_7Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 4 , ADC_SampleTime_7Cycles5);
     ADC_TempSensorVrefintCmd(ENABLE);                                               // 温度使能
 
     ADC_DMACmd(ADC1, ENABLE);	                                            //ADC DMA Enable
@@ -155,19 +114,8 @@ CSystem::Device::Adc::Adc(void)
     ADC_SoftwareStartConvCmd(ADC1, ENABLE);
     DMA_Cmd(DMA1_Channel1, ENABLE);
 
-    InitRegisterBlock();
-    PortRegister();
 }
 
-/*******************************************************************************
-* 描述	    : 把应用层变量指针注册到对应的通道数组中，实现底层数据向顶层传递
-* 输入参数  : adcChannel: ADC通道号
-*           : dataPoint: 应用层变量指针
-*******************************************************************************/
-void CSystem::Device::Adc::Register(AdcChannelEnum channel, ushort * dataPointer)
-{
-    RegisterPointerBlock[channel] = dataPointer;
-}
 
 	
 	 

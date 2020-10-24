@@ -39,23 +39,11 @@ CApp App;
 CApp::CApp(void)
 {
     AppDataPointer = &App.Data;
-    AppMenuPointer = &App.Menu;
-    
-    App.Data.Frequency = 800000;
-    App.Data.PowerPercent = 20;
-    App.Data.Power = 6000;
     App.Data.Voltage = 99;
     App.Data.Current = 101;
-    App.Data.Temperature = 25;
+
     App.Data.OnOff = on;
-    
-    
-    App.Data.MaxPower = 6000;
-    App.Data.MaxTemperature = 50;
-    App.Data.MaxFrequency = 980000;
-    App.Data.MaxFrequencyOffset = 100000;
-    App.Data.MaxPress = 2.0;
-    App.Data.State = 1;
+
     App.Data.Rtc.Year = 0x7DD;
     App.Data.Rtc.Month = 4;
     App.Data.Rtc.Day = 0x1A;
@@ -72,7 +60,6 @@ CApp::CApp(void)
     App.Data.IdentifyNumber1 = pUint(IdentifyNumberAddress + 4);
     App.Data.IdentifyNumber2 = pUint(IdentifyNumberAddress + 8);
 
-    App.Menu.FocusFormPointer = (Form *)0;
 }
 
 /*******************************************************************************
@@ -80,9 +67,5 @@ CApp::CApp(void)
 *******************************************************************************/
 int main(void) 
 {      
-    System.OS.CreateLogicTask(LogicTask);   // 创建业务逻辑任务
-    System.OS.CreateMenuTask(MenuTask);     // 创建菜单界面任务
-    
-    System.OS.Start();
-    EnableIrq();                            // 关中断
+	LogicTask();
 }

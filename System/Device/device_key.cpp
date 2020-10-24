@@ -31,15 +31,7 @@
 #include "drive.h"
 #include "system.h"
 
-#define PinBeep PaOut->Bit1
 
-#define PinX0	PcIn->Bit10
-#define PinX1	PcIn->Bit11
-#define PinX2	PcIn->Bit12
-#define PinX3	PbIn->Bit3
-
-#define PinY0	PbOut->Bit4
-#define PinY1	PbOut->Bit5
 
 #define ShortInterval       30		// 短按间隔
 #define LongInterval        150		// 长按间隔
@@ -82,101 +74,12 @@ static byte RemapLongKey(byte scan)
 
 void KeySystick1000Routine(void) 
 {
-    static byte Key;
-    static int StateCounter = 0;
-    
-    if (!KeyEnable) return;
-    
-    if (++StateCounter == 3) StateCounter = 0;
-    switch (StateCounter)
-    {
-        case 0:
-            Key = invalid;
-            if(PinX3 == 0)  Key &= 0x7F;
-            if(PinX2 == 0)  Key &= 0xBF;
-            if(PinX1 == 0)  Key &= 0xDF;
-            if(PinX0 == 0)  Key &= 0xEF;
-            PinY0 = 0;
-            PinY1 = 1;
-            break;
-            
-        case 1:
-            if(PinX3 == 0)  Key &= 0xF7;
-            if(PinX2 == 0)  Key &= 0xFB;
-            if(PinX1 == 0)  Key &= 0xFD;
-            if(PinX0 == 0)  Key &= 0xFE;
-            PinY1 = 0;
-            PinY0 = 1;
-            break;
 
-        case 2:
-            if (Key != invalid && ScanCounter >= 0)
-            {
-                if (Key != Scan)
-                {
-                    Scan = Key;
-                    ScanCounter = 0;
-                }
-                else
-                {
-                    if (++ScanCounter > 10000) ScanCounter = 10000;
-                }
-                    
-            }
-            else
-            {
-                
-                if (ScanCounter > 0) ScanCounter--;
-                if (ScanCounter < 0) ScanCounter++;
-                if (ScanCounter == -1) PinBeep = 0;
-
-                if (ScanCounter >= LongInterval) 
-                { 
-                    PostMessage(MessageKey, RemapLongKey(Scan));
-                    goto A;
-                }
-                else if (ScanCounter >= ShortInterval) 
-                {
-                    PostMessage(MessageKey, RemapKey(Scan));
-A:                  ScanCounter = -10;
-                    Scan = invalid;
-                    PinBeep = 1;
-                }
-            }
-            break;
-            
-    }
 }
 
 CSystem::Device::Key::Key(void)
 {
- 	GPIO_InitTypeDef GPIO_InitStructure;
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_AFIO, ENABLE);
- 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
-	PinY1 = 0;
-	PinY0 = 1;
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_4 | GPIO_Pin_5;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_3;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 
-	GPIO_Init(GPIOC, &GPIO_InitStructure);
-    
-    PinBeep = 0;  
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
- 	GPIO_Init(GPIOA, &GPIO_InitStructure);
     
 }
 
